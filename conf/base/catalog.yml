@@ -1,4 +1,38 @@
-# Here you can define all your datasets by using simple YAML syntax.
-#
-# Documentation for this file format can be found in "The Data Catalog"
-# Link: https://docs.kedro.org/en/stable/catalog-data/introduction/#data-catalog
+# CAPA 01_RAW: Datos originales (Pipeline 1)
+empleados:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/empleados.csv
+
+evaluaciones:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/evaluaciones.csv
+
+capacitaciones:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/capacitaciones.csv
+
+ausencias:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/ausencias.csv
+
+# CAPA 02_INTERMEDIATE: Datos limpios (Pipeline 2)
+empleados_clean:
+  type: pandas.CSVDataSet
+  filepath: data/02_intermediate/empleados_clean.csv
+
+evaluaciones_clean:
+  type: pandas.CSVDataSet
+  filepath: data/02_intermediate/evaluaciones_clean.csv
+
+capacitaciones_clean:
+  type: pandas.CSVDataSet
+  filepath: data/02_intermediate/capacitaciones_clean.csv
+
+ausencias_clean:
+  type: pandas.CSVDataSet
+  filepath: data/02_intermediate/ausencias_clean.csv
+
+# CAPA 03_PRIMARY: Datos integrados y transformados (Pipeline 3)
+dataset_final_integrado:
+  type: pandas.CSVDataSet
+  filepath: data/03_primary/dataset_final_integrado.csv

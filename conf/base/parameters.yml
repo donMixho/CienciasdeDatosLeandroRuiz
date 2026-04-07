@@ -1,0 +1,17 @@
+# Parámetros para el Pipeline de Limpieza
+cleaning:
+  # Proporción para el método IQR
+  outlier_threshold: 1.5
+  # Valores por defecto para nulos
+  default_category: "Sin Asignar"
+  default_binary: "No"
+
+# Parámetros para el Pipeline de Transformación
+transform:
+  # Columnas para los joins
+  primary_key: "id_empleado"
+  # Columnas para promediar en evaluaciones
+  evaluation_metrics:
+    - "puntaje_desempeno"
+    - "competencias_tecnicas"
+    - "competencias_blandas"
