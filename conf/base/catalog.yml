@@ -1,38 +1,63 @@
 # CAPA 01_RAW: Datos originales (Pipeline 1)
 empleados:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/01_raw/empleados.csv
+  load_args:
+    encoding: latin-1
 
 evaluaciones:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/01_raw/evaluaciones.csv
+  load_args:
+    encoding: latin-1
 
 capacitaciones:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/01_raw/capacitaciones.csv
+  load_args:
+    encoding: latin-1
 
 ausencias:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/01_raw/ausencias.csv
+  load_args:
+    encoding: latin-1
 
 # CAPA 02_INTERMEDIATE: Datos limpios (Pipeline 2)
 empleados_clean:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/02_intermediate/empleados_clean.csv
+  load_args:
+    encoding: latin-1
 
 evaluaciones_clean:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/02_intermediate/evaluaciones_clean.csv
+  load_args:
+    encoding: latin-1
 
 capacitaciones_clean:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/02_intermediate/capacitaciones_clean.csv
+  load_args:
+    encoding: latin-1
 
 ausencias_clean:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/02_intermediate/ausencias_clean.csv
+  load_args:
+    encoding: latin-1
 
 # CAPA 03_PRIMARY: Datos integrados y transformados (Pipeline 3)
 dataset_final_integrado:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/03_primary/dataset_final_integrado.csv
+  save_args:
+    encoding: latin-1
+
+  # CAPA 08_REPORTING: Reportes de diagnóstico y validación (Pipeline 1 y 4)
+reporte_diagnostico:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/reporte_diagnostico.csv
+  save_args:
+    encoding: latin-1

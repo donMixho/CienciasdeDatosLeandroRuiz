@@ -12,10 +12,10 @@ Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
 
 In order to get the best out of the template:
 
-* Don't remove any lines from the `.gitignore` file we provide
-* Make sure your results can be reproduced by following a data engineering convention
-* Don't commit data to your repository
-* Don't commit any credentials or your local configuration to your repository. Keep all your credentials and local configuration in `conf/local/`
+- Don't remove any lines from the `.gitignore` file we provide
+- Make sure your results can be reproduced by following a data engineering convention
+- Don't commit data to your repository
+- Don't commit any credentials or your local configuration to your repository. Keep all your credentials and local configuration in `conf/local/`
 
 ## How to install dependencies
 
@@ -45,7 +45,6 @@ pytest
 
 You can configure the coverage threshold in your project's `pyproject.toml` file under the `[tool.coverage.report]` section.
 
-
 ## Project dependencies
 
 To see and update the dependency requirements for your project use `requirements.txt`. You can install the project requirements with `pip install -r requirements.txt`.
@@ -59,6 +58,7 @@ To see and update the dependency requirements for your project use `requirements
 > Jupyter, JupyterLab, and IPython are already included in the project requirements by default, so once you have run `pip install -r requirements.txt` you will not need to take any extra steps before you use them.
 
 ### Jupyter
+
 To use Jupyter notebooks in your Kedro project, you need to install Jupyter:
 
 ```
@@ -72,6 +72,7 @@ kedro jupyter notebook
 ```
 
 ### JupyterLab
+
 To use JupyterLab, you need to install it:
 
 ```
@@ -85,6 +86,7 @@ kedro jupyter lab
 ```
 
 ### IPython
+
 And if you want to run an IPython session:
 
 ```
@@ -92,10 +94,46 @@ kedro ipython
 ```
 
 ### How to ignore notebook output cells in `git`
+
 To automatically strip out all output cell contents before committing to `git`, you can use tools like [`nbstripout`](https://github.com/kynan/nbstripout). For example, you can add a hook in `.git/config` with `nbstripout --install`. This will run `nbstripout` before anything is committed to `git`.
 
-> *Note:* Your output cells will be retained locally.
+> _Note:_ Your output cells will be retained locally.
 
 ## Package your Kedro project
 
 [Further information about building project documentation and packaging your project](https://docs.kedro.org/en/stable/deploy/package_a_project/#package-an-entire-kedro-project)
+
+## Troubleshooting / Resolución de Problemas
+
+Si encuentras problemas al ejecutar el pipeline, consulta el documento [RESOLUCIÓN_PROBLEMAS.md](RESOLUCIÓN_PROBLEMAS.md) que contiene:
+
+- ✅ Errores comunes y sus soluciones
+- ✅ Configuración requerida en catálogo
+- ✅ Pasos de instalación y verificación
+- ✅ Comandos para ejecutar cada pipeline
+
+### Instalación de Dependencias Clave
+
+```bash
+# Instalar scikit-learn (requerido para MinMaxScaler, LabelEncoder)
+python -m pip install scikit-learn
+
+# Instalar todas las dependencias del proyecto
+pip install -r requirements.txt
+```
+
+### Ejecutar Pipelines Específicos
+
+```bash
+# Data Ingestion Pipeline
+kedro run --pipeline data_ingestion
+
+# Data Cleaning Pipeline
+kedro run --pipeline data_cleaning
+
+# Data Transformation Pipeline
+kedro run --pipeline data_transformation
+
+# Todos los pipelines
+kedro run
+```
