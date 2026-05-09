@@ -52,6 +52,8 @@ ausencias_clean:
 dataset_final_integrado:
   type: pandas.CSVDataset
   filepath: data/03_primary/dataset_final_integrado.csv
+  load_args:
+    encoding: latin-1
   save_args:
     encoding: latin-1
 
@@ -61,3 +63,12 @@ reporte_diagnostico:
   filepath: data/08_reporting/reporte_diagnostico.csv
   save_args:
     encoding: latin-1
+
+#pipeline 4
+reporte_comparacion:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/reporte_comparacion.csv
+
+reporte_validacion_final:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/reporte_validacion_final.csv

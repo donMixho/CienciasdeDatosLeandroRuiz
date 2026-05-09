@@ -12,6 +12,9 @@ from leandrocienciasdedatos.pipelines.data_ingestion.pipeline import (
 from leandrocienciasdedatos.pipelines.data_transformation.pipeline import (
     create_pipeline as create_data_transformation_pipeline,
 )
+from leandrocienciasdedatos.pipelines.data_validation.pipeline import (
+    create_pipeline as create_data_validation_pipeline,
+)
 
 
 def register_pipelines() -> dict[str, Pipeline]:
@@ -24,6 +27,7 @@ def register_pipelines() -> dict[str, Pipeline]:
         "data_ingestion": create_data_ingestion_pipeline(),
         "data_cleaning": create_data_cleaning_pipeline(),
         "data_transformation": create_data_transformation_pipeline(),
+        "data_validation": create_data_validation_pipeline(),
     }
     pipelines["__default__"] = sum(pipelines.values())
     return pipelines
