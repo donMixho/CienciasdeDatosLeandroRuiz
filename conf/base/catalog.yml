@@ -28,47 +28,66 @@ empleados_clean:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/empleados_clean.csv
   load_args:
-    encoding: latin-1
+    encoding: utf-8-sig
+  save_args:
+    index: false
+    encoding: utf-8-sig
 
 evaluaciones_clean:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/evaluaciones_clean.csv
   load_args:
-    encoding: latin-1
+    encoding: utf-8-sig
+  save_args:
+    index: false
+    encoding: utf-8-sig
 
 capacitaciones_clean:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/capacitaciones_clean.csv
   load_args:
-    encoding: latin-1
+    encoding: utf-8-sig
+  save_args:
+    index: false
+    encoding: utf-8-sig
 
 ausencias_clean:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/ausencias_clean.csv
   load_args:
-    encoding: latin-1
+    encoding: utf-8-sig
+  save_args:
+    index: false
+    encoding: utf-8-sig
 
 # CAPA 03_PRIMARY: Datos integrados y transformados (Pipeline 3)
 dataset_final_integrado:
   type: pandas.CSVDataset
   filepath: data/03_primary/dataset_final_integrado.csv
   load_args:
-    encoding: latin-1
+    encoding: utf-8-sig
   save_args:
-    encoding: latin-1
+    index: false
+    encoding: utf-8-sig-sig
 
-  # CAPA 08_REPORTING: Reportes de diagnóstico y validación (Pipeline 1 y 4)
+# CAPA 08_REPORTING: Reportes (Pipeline 1 y 4)
 reporte_diagnostico:
   type: pandas.CSVDataset
   filepath: data/08_reporting/reporte_diagnostico.csv
   save_args:
-    encoding: latin-1
+    index: false
+    encoding: utf-8-sig
 
-#pipeline 4
 reporte_comparacion:
   type: pandas.CSVDataset
   filepath: data/08_reporting/reporte_comparacion.csv
+  save_args:
+    index: false
+    encoding: utf-8-sig
 
 reporte_validacion_final:
   type: pandas.CSVDataset
   filepath: data/08_reporting/reporte_validacion_final.csv
+  save_args:
+    index: false
+    encoding: utf-8-sig
