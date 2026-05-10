@@ -48,6 +48,13 @@ def limpiar_empleados(df: pd.DataFrame, parameters: dict) -> pd.DataFrame:
     for col in ["nombre", "departamento", "cargo"]:
         df[col] = df[col].str.strip().str.title()
 
+    # 7. Limpiar caracteres especiales problemáticos
+    for col in df.columns:
+        if df[col].dtype == 'object':
+            df[col] = df[col].apply(
+                lambda x: x.encode('utf-8', 'ignore').decode('utf-8') if isinstance(x, str) else x
+            )
+
     logger.info(f"empleados: {filas_inicial} -> {len(df)} filas tras limpieza")
     return df
 
@@ -95,6 +102,13 @@ def limpiar_evaluaciones(df: pd.DataFrame, parameters: dict) -> pd.DataFrame:
     df["periodo"] = df["periodo"].fillna("Sin Periodo")
     df["evaluador"] = df["evaluador"].fillna("Sin Evaluador")
 
+    # Limpiar caracteres especiales problemáticos
+    for col in df.columns:
+        if df[col].dtype == 'object':
+            df[col] = df[col].apply(
+                lambda x: x.encode('utf-8', 'ignore').decode('utf-8') if isinstance(x, str) else x
+            )
+
     logger.info(f"evaluaciones: {filas_inicial} -> {len(df)} filas tras limpieza")
     return df
 
@@ -138,6 +152,13 @@ def limpiar_capacitaciones(df: pd.DataFrame, parameters: dict) -> pd.DataFrame:
     # 6. Corregir tipos
     df["id_empleado"] = pd.to_numeric(df["id_empleado"], errors="coerce").astype(int)
 
+    # 7. Limpiar caracteres especiales problemáticos
+    for col in df.columns:
+        if df[col].dtype == 'object':
+            df[col] = df[col].apply(
+                lambda x: x.encode('utf-8', 'ignore').decode('utf-8') if isinstance(x, str) else x
+            )
+
     logger.info(f"capacitaciones: {filas_inicial} -> {len(df)} filas tras limpieza")
     return df
 
@@ -180,6 +201,13 @@ def limpiar_ausencias(df: pd.DataFrame, parameters: dict) -> pd.DataFrame:
 
     # 6. Corregir tipos
     df["id_empleado"] = pd.to_numeric(df["id_empleado"], errors="coerce").astype(int)
+
+    # 7. Limpiar caracteres especiales problemáticos (para Windows/CP1252)
+    for col in df.columns:
+        if df[col].dtype == 'object':
+            df[col] = df[col].apply(
+                lambda x: x.encode('utf-8', 'ignore').decode('utf-8') if isinstance(x, str) else x
+            )
 
     logger.info(f"ausencias: {filas_inicial} -> {len(df)} filas tras limpieza")
     return df
