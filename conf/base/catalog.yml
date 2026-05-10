@@ -1,4 +1,4 @@
-# CAPA 01_RAW: Datos originales (Pipeline 1)
+# CAPA 01_RAW: Datos originales (utf-8, así vienen)
 empleados:
   type: pandas.CSVDataset
   filepath: data/01_raw/empleados.csv
@@ -23,87 +23,71 @@ ausencias:
   load_args:
     encoding: utf-8
 
-# CAPA 02_INTERMEDIATE: Datos limpios (Pipeline 2)
+# CAPA 02_INTERMEDIATE: Datos limpios (latin-1 para evitar errores en Windows)
 empleados_clean:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/empleados_clean.csv
   load_args:
-    encoding: utf-8
+    encoding: latin-1
   save_args:
     index: false
-  fs_open_args_save:
-    mode: "w"
-    encoding: "utf-8"
+    encoding: latin-1
 
 evaluaciones_clean:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/evaluaciones_clean.csv
   load_args:
-    encoding: utf-8
+    encoding: latin-1
   save_args:
     index: false
-  fs_open_args_save:
-    mode: "w"
-    encoding: "utf-8"
+    encoding: latin-1
 
 capacitaciones_clean:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/capacitaciones_clean.csv
   load_args:
-    encoding: utf-8
+    encoding: latin-1
   save_args:
     index: false
-  fs_open_args_save:
-    mode: "w"
-    encoding: "utf-8"
+    encoding: latin-1
 
 ausencias_clean:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/ausencias_clean.csv
   load_args:
-    encoding: utf-8
+    encoding: latin-1
   save_args:
     index: false
-  fs_open_args_save:
-    mode: "w"
-    encoding: "utf-8"
+    encoding: latin-1
 
-# CAPA 03_PRIMARY: Datos integrados y transformados (Pipeline 3)
+# CAPA 03_PRIMARY: Datos integrados
 dataset_final_integrado:
   type: pandas.CSVDataset
   filepath: data/03_primary/dataset_final_integrado.csv
   load_args:
-    encoding: utf-8
+    encoding: latin-1
   save_args:
     index: false
-  fs_open_args_save:
-    mode: "w"
-    encoding: "utf-8"
+    encoding: latin-1
 
-# CAPA 08_REPORTING: Reportes (Pipeline 1 y 4)
+# CAPA 08_REPORTING: Reportes
 reporte_diagnostico:
   type: pandas.CSVDataset
   filepath: data/08_reporting/reporte_diagnostico.csv
   save_args:
     index: false
-  fs_open_args_save:
-    mode: "w"
-    encoding: "utf-8"
+    encoding: latin-1
 
 reporte_comparacion:
   type: pandas.CSVDataset
   filepath: data/08_reporting/reporte_comparacion.csv
   save_args:
     index: false
-  fs_open_args_save:
-    mode: "w"
-    encoding: "utf-8"
+    encoding: latin-1
 
 reporte_validacion_final:
   type: pandas.CSVDataset
   filepath: data/08_reporting/reporte_validacion_final.csv
   save_args:
     index: false
-  fs_open_args_save:
-    mode: "w"
-    encoding: "utf-8"
+    encoding: latin-1
