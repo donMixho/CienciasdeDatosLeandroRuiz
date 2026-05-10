@@ -1,139 +1,169 @@
-# LeandroCienciasDeDatos
+# 🧠 LeandroCienciasDeDatos — EV1
 
 [![Powered by Kedro](https://img.shields.io/badge/powered_by-kedro-ffc900?logo=kedro)](https://kedro.org)
+[![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org/)
 
-## Overview
+## 📋 Descripción
 
-This is your new Kedro project, which was generated using `kedro 1.3.1`.
+Proyecto de transformación de datos del caso **Recursos Humanos**, desarrollado como parte de la asignatura **SCY1101 - Programación para la Ciencia de Datos**. Simula un entorno profesional de ciencia de datos utilizando el framework **Kedro** como orquestador del flujo de datos.
 
-Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
+Los datos corresponden a una empresa con 4 datasets relacionados:
 
-## Rules and guidelines
+- `empleados.csv` — Información base de cada trabajador
+- `evaluaciones.csv` — Evaluaciones de desempeño por periodo
+- `capacitaciones.csv` — Cursos y horas de formación
+- `ausencias.csv` — Registro de ausencias laborales
 
-In order to get the best out of the template:
+---
 
-- Don't remove any lines from the `.gitignore` file we provide
-- Make sure your results can be reproduced by following a data engineering convention
-- Don't commit data to your repository
-- Don't commit any credentials or your local configuration to your repository. Keep all your credentials and local configuration in `conf/local/`
+---
 
-## How to install dependencies
+## 🏗️ Estructura del Proyecto
 
-Declare any dependencies in `requirements.txt` for `pip` installation.
+CienciasdeDatosLeandroRuiz/
+├── conf/
+│ └── base/
+│ ├── catalog.yml → Definición de datasets
+│ └── parameters.yml → Parámetros configurables
+├── data/
+│ ├── 01_raw/ → CSVs originales (no modificar)
+│ ├── 02_intermediate/ → Datos limpios
+│ ├── 03_primary/ → Dataset final integrado
+│ └── 08_reporting/ → Reportes de diagnóstico y validación
+├── notebooks/
+│ └── Ciencias_De_Datos.ipynb → EDA exploratorio
+├── src/leandrocienciasdedatos/
+│ └── pipelines/
+│ ├── data_ingestion/ → Pipeline 1: Carga y diagnóstico
+│ ├── data_cleaning/ → Pipeline 2: Limpieza
+│ ├── data_transformation/ → Pipeline 3: Transformación
+│ └── data_validation/ → Pipeline 4: Validación
+├── requirements.txt
+└── README.md
 
-To install them, run:
+---
 
+---
+
+## ⚙️ Instalación
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/donMixho/CienciasdeDatosLeandroRuiz.git
+cd CienciasdeDatosLeandroRuiz
 ```
+
+### 2. Crear entorno virtual
+
+```bash
+python -m venv .venv
+```
+
+### 3. Activar entorno virtual
+
+```bash
+# Windows
+.venv\Scripts\activate
+
+# Mac/Linux
+source .venv/bin/activate
+```
+
+### 4. Instalar dependencias
+
+```bash
 pip install -r requirements.txt
 ```
 
-## How to run your Kedro pipeline
+### 5. Agregar los CSV originales
 
-You can run your Kedro project with:
+Coloca los 4 archivos en `data/01_raw/`:
 
-```
+- `empleados.csv`
+- `evaluaciones.csv`
+- `capacitaciones.csv`
+- `ausencias.csv`
+
+---
+
+## 🚀 Ejecución
+
+### Correr todos los pipelines
+
+```bash
 kedro run
 ```
 
-## How to test your Kedro project
-
-Have a look at the file `tests/test_run.py` for instructions on how to write your tests. You can run your tests as follows:
-
-```
-pytest
-```
-
-You can configure the coverage threshold in your project's `pyproject.toml` file under the `[tool.coverage.report]` section.
-
-## Project dependencies
-
-To see and update the dependency requirements for your project use `requirements.txt`. You can install the project requirements with `pip install -r requirements.txt`.
-
-[Further information about project dependencies](https://docs.kedro.org/en/stable/kedro_project_setup/dependencies.html#project-specific-dependencies)
-
-## How to work with Kedro and notebooks
-
-> Note: Using `kedro jupyter` or `kedro ipython` to run your notebook provides these variables in scope: `context`, 'session', `catalog`, and `pipelines`.
->
-> Jupyter, JupyterLab, and IPython are already included in the project requirements by default, so once you have run `pip install -r requirements.txt` you will not need to take any extra steps before you use them.
-
-### Jupyter
-
-To use Jupyter notebooks in your Kedro project, you need to install Jupyter:
-
-```
-pip install jupyter
-```
-
-After installing Jupyter, you can start a local notebook server:
-
-```
-kedro jupyter notebook
-```
-
-### JupyterLab
-
-To use JupyterLab, you need to install it:
-
-```
-pip install jupyterlab
-```
-
-You can also start JupyterLab:
-
-```
-kedro jupyter lab
-```
-
-### IPython
-
-And if you want to run an IPython session:
-
-```
-kedro ipython
-```
-
-### How to ignore notebook output cells in `git`
-
-To automatically strip out all output cell contents before committing to `git`, you can use tools like [`nbstripout`](https://github.com/kynan/nbstripout). For example, you can add a hook in `.git/config` with `nbstripout --install`. This will run `nbstripout` before anything is committed to `git`.
-
-> _Note:_ Your output cells will be retained locally.
-
-## Package your Kedro project
-
-[Further information about building project documentation and packaging your project](https://docs.kedro.org/en/stable/deploy/package_a_project/#package-an-entire-kedro-project)
-
-## Troubleshooting / Resolución de Problemas
-
-Si encuentras problemas al ejecutar el pipeline, consulta el documento [RESOLUCIÓN_PROBLEMAS.md](RESOLUCIÓN_PROBLEMAS.md) que contiene:
-
-- ✅ Errores comunes y sus soluciones
-- ✅ Configuración requerida en catálogo
-- ✅ Pasos de instalación y verificación
-- ✅ Comandos para ejecutar cada pipeline
-
-### Instalación de Dependencias Clave
+### Correr un pipeline específico
 
 ```bash
-# Instalar scikit-learn (requerido para MinMaxScaler, LabelEncoder)
-python -m pip install scikit-learn
-
-# Instalar todas las dependencias del proyecto
-pip install -r requirements.txt
-```
-
-### Ejecutar Pipelines Específicos
-
-```bash
-# Data Ingestion Pipeline
 kedro run --pipeline data_ingestion
-
-# Data Cleaning Pipeline
 kedro run --pipeline data_cleaning
-
-# Data Transformation Pipeline
 kedro run --pipeline data_transformation
-
-# Todos los pipelines
-kedro run
+kedro run --pipeline data_validation
 ```
+
+---
+
+## 🔄 Pipelines
+
+### Pipeline 1 — Data Ingestion
+
+Carga los 4 CSVs y genera un reporte de diagnóstico inicial con métricas de calidad de datos.
+
+**Output:** `data/08_reporting/reporte_diagnostico.csv`
+
+### Pipeline 2 — Data Cleaning
+
+Limpia los 4 datasets aplicando:
+
+- Eliminación de duplicados
+- Tratamiento de valores nulos
+- Corrección de tipos de datos
+- Estandarización de fechas con formato mixto
+- Normalización de strings
+- Tratamiento de outliers con método IQR
+
+**Output:** `data/02_intermediate/*_clean.csv`
+
+### Pipeline 3 — Data Transformation
+
+Integra los 4 datasets limpios en uno consolidado aplicando:
+
+- Joins/merges por `id_empleado`
+- Aggregations con `groupby`
+- Features derivadas: `antiguedad_anos`, `score_global`
+- Normalización con `MinMaxScaler`
+- Codificación de variables categóricas con `LabelEncoder`
+
+**Output:** `data/03_primary/dataset_final_integrado.csv`
+
+### Pipeline 4 — Data Validation
+
+Verifica la integridad del proceso completo:
+
+- Comparación antes/después de limpieza
+- Validación de esquema del dataset final
+- Verificación de columnas clave sin nulos
+
+**Output:** `data/08_reporting/reporte_comparacion.csv`, `data/08_reporting/reporte_validacion_final.csv`
+
+---
+
+## 📦 Dependencias principales
+
+| Librería              | Uso                             |
+| --------------------- | ------------------------------- |
+| `kedro~=1.3.1`        | Orquestación del flujo de datos |
+| `pandas>=2.3.3`       | Manipulación de datos           |
+| `numpy>=1.26.0`       | Operaciones numéricas           |
+| `scikit-learn>=1.3.0` | Normalización y encoding        |
+
+---
+
+## 👤 Autor
+
+**Leandro Ruiz**  
+Ingeniería Informática — Ciencia de Datos  
+SCY1101 — 2025
