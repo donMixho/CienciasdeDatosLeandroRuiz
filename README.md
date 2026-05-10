@@ -20,26 +20,28 @@ Los datos corresponden a una empresa con 4 datasets relacionados:
 
 ## 🏗️ Estructura del Proyecto
 
+```
 CienciasdeDatosLeandroRuiz/
 ├── conf/
-│ └── base/
-│ ├── catalog.yml → Definición de datasets
-│ └── parameters.yml → Parámetros configurables
+│   └── base/
+│       ├── catalog.yml        → Definición de datasets
+│       └── parameters.yml     → Parámetros configurables
 ├── data/
-│ ├── 01_raw/ → CSVs originales (no modificar)
-│ ├── 02_intermediate/ → Datos limpios
-│ ├── 03_primary/ → Dataset final integrado
-│ └── 08_reporting/ → Reportes de diagnóstico y validación
+│   ├── 01_raw/                → CSVs originales (no modificar)
+│   ├── 02_intermediate/       → Datos limpios
+│   ├── 03_primary/            → Dataset final integrado
+│   └── 08_reporting/          → Reportes de diagnóstico y validación
 ├── notebooks/
-│ └── Ciencias_De_Datos.ipynb → EDA exploratorio
+│   └── Ciencias_De_Datos.ipynb → EDA exploratorio
 ├── src/leandrocienciasdedatos/
-│ └── pipelines/
-│ ├── data_ingestion/ → Pipeline 1: Carga y diagnóstico
-│ ├── data_cleaning/ → Pipeline 2: Limpieza
-│ ├── data_transformation/ → Pipeline 3: Transformación
-│ └── data_validation/ → Pipeline 4: Validación
+│   └── pipelines/
+│       ├── data_ingestion/      → Pipeline 1: Carga y diagnóstico
+│       ├── data_cleaning/       → Pipeline 2: Limpieza
+│       ├── data_transformation/ → Pipeline 3: Transformación
+│       └── data_validation/     → Pipeline 4: Validación
 ├── requirements.txt
 └── README.md
+```
 
 ---
 
