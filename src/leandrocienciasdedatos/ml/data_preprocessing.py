@@ -52,33 +52,56 @@ def optimizar_tipos(df: pd.DataFrame) -> pd.DataFrame:
 def preparar_dataset(df: pd.DataFrame) -> pd.DataFrame:
     """
     Prepara el dataset_final_integrado para Machine Learning.
-    Usa KNNImputer para preservar todas las filas sin perder información.
-    Crea el target de clasificación y optimiza tipos de datos.
+    - Rellena con 0 ausencias y capacitaciones faltantes (lógica de negocio)
+    - Usa KNNImputer para métricas de desempeño
+    - Crea el target de clasificación
     """
     from sklearn.impute import KNNImputer
 
     df = df.copy()
 
-    # Seleccionar columnas numéricas para imputar
-    cols_numericas = FEATURES_CLASIFICACION + FEATURES_REGRESION + [
-        "score_global", "avg_desempeno"
+    # Paso 1: Relleno lógico de negocio (0 = sin registros)
+    cols_cero = [
+        "total_dias_ausencia",
+        "total_horas_capacitacion",
+        "total_dias_ausencia_norm",
+        "total_horas_capacitacion_norm",
     ]
-    cols_numericas = list(set(cols_numericas))
-    cols_existentes = [c for c in cols_numericas if c in df.columns]
+    for col in cols_cero:
+        if col in df.columns:
+            df[col] = df[col].fillna(0)
 
-    # Aplicar KNNImputer (k=5 vecinos más cercanos)
+    # Paso 2: KNNImputer para métricas de desempeño
+    cols_knn = [
+        "avg_desempeno",
+        "avg_tecnicas",
+        "avg_blandas",
+        "score_global",
+        "antiguedad_anos",
+        "antiguedad_anos_norm",
+        "departamento_encoded",
+        "cargo_encoded",
+        "tipo_contrato_encoded",
+        "jornada_encoded",
+    ]
+    cols_knn_existentes = [c for c in cols_knn if c in df.columns]
+
     imputer = KNNImputer(n_neighbors=5)
-    df[cols_existentes] = imputer.fit_transform(df[cols_existentes])
+    df[cols_knn_existentes] = imputer.fit_transform(
+        df[cols_knn_existentes]
+    )
 
-    # Crear target de clasificación binario
+    # Paso 3: Crear target de clasificación
     mediana = df["score_global"].median()
-    df[TARGET_CLASIFICACION] = (df["score_global"] > mediana).astype(int)
+    df[TARGET_CLASIFICACION] = (
+        df["score_global"] > mediana
+    ).astype(int)
 
-    # Optimizar memoria
+    # Paso 4: Optimizar memoria
     df = optimizar_tipos(df)
 
     logger.info(
-        f"Dataset preparado con KNNImputer: {df.shape[0]} filas | "
+        f"Dataset preparado: {df.shape[0]} filas | "
         f"Clase 1 (alto desempeño): {df[TARGET_CLASIFICACION].sum()} | "
         f"Clase 0: {(df[TARGET_CLASIFICACION] == 0).sum()}"
     )
