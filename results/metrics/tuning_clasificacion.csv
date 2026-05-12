@@ -1,0 +1,7 @@
+modelo,metodo,mejor_score,mejores_params
+RandomForest,GridSearchCV,0.4897,"{'model__max_depth': 10, 'model__min_samples_split': 2, 'model__n_estimators': 50}"
+RandomForest,RandomizedSearchCV,0.4897,"{'model__n_estimators': 50, 'model__min_samples_split': 2, 'model__max_depth': 10}"
+GradientBoosting,GridSearchCV,0.4997,"{'model__learning_rate': 0.2, 'model__max_depth': 3, 'model__n_estimators': 50}"
+GradientBoosting,RandomizedSearchCV,0.4997,"{'model__n_estimators': 50, 'model__max_depth': 3, 'model__learning_rate': 0.2}"
+LogisticRegression,GridSearchCV,0.607,"{'model__C': 0.1, 'model__solver': 'lbfgs'}"
+LogisticRegression,RandomizedSearchCV,0.607,"{'model__solver': 'lbfgs', 'model__C': 0.1}"

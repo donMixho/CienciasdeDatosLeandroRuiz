@@ -91,3 +91,77 @@ reporte_validacion_final:
   save_args:
     index: false
     encoding: latin-1
+
+#
+# segunda parte del catálogo, con datasets de salida de nodos específicos
+#
+
+# ── CAPA 04_FEATURE: Dataset preparado para ML ────────────────────────────────
+dataset_ml_preparado:
+  type: pandas.CSVDataset
+  filepath: data/04_feature/dataset_ml_preparado.csv
+  load_args:
+    encoding: latin-1
+  save_args:
+    index: false
+    encoding: latin-1
+
+# ── CAPA 07_MODEL_OUTPUT: Resultados de modelos supervisados ─────────────────
+metricas_clasificacion:
+  type: pandas.CSVDataset
+  filepath: data/07_model_output/metricas_clasificacion.csv
+  save_args:
+    index: false
+    encoding: utf-8
+
+metricas_regresion:
+  type: pandas.CSVDataset
+  filepath: data/07_model_output/metricas_regresion.csv
+  save_args:
+    index: false
+    encoding: utf-8
+
+# ── CAPA 07_MODEL_OUTPUT: Resultados de modelos no supervisados ──────────────
+pca_resultado:
+  type: pandas.CSVDataset
+  filepath: data/07_model_output/pca_resultado.csv
+  save_args:
+    index: false
+    encoding: utf-8
+
+kmeans_resultado:
+  type: pandas.CSVDataset
+  filepath: data/07_model_output/kmeans_resultado.csv
+  save_args:
+    index: false
+    encoding: utf-8
+
+# ── CAPA 07_MODEL_OUTPUT: Resultados de evaluación con CV ────────────────────
+cv_clasificacion:
+  type: pandas.CSVDataset
+  filepath: data/07_model_output/cv_clasificacion.csv
+  save_args:
+    index: false
+    encoding: utf-8
+
+cv_regresion:
+  type: pandas.CSVDataset
+  filepath: data/07_model_output/cv_regresion.csv
+  save_args:
+    index: false
+    encoding: utf-8
+
+# ── CAPA 07_MODEL_OUTPUT: Resultados de optimización de hiperparámetros ──────
+tuning_clasificacion:
+  type: pandas.CSVDataset
+  filepath: data/07_model_output/tuning_clasificacion.csv
+  save_args:
+    index: false
+    encoding: utf-8
+
+tuning_regresion:
+  type: pandas.CSVDataset
+  filepath: data/07_model_output/tuning_regresion.csv
+  save_args:
+    index: false
+    encoding: utf-8

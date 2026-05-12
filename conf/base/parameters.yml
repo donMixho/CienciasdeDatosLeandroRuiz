@@ -15,3 +15,21 @@ transform:
     - "puntaje_desempeno"
     - "competencias_tecnicas"
     - "competencias_blandas"
+
+# Parámetros para los Pipelines de Machine Learning
+ml:
+  # División train/test
+  test_size: 0.2
+
+  # Validación cruzada
+  cv_folds: 5
+
+  # PCA
+  pca_n_components: 2
+
+  # K-Means
+  kmeans_n_clusters: 3
+  kmeans_max_k: 8
+
+  # RandomizedSearchCV
+  random_search_n_iter: 20

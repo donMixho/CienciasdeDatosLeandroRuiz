@@ -1,0 +1,6 @@
+modelo,rmse,mae,r2
+RandomForestRegressor,1.2066,0.9896,0.1827
+Ridge,1.2604,1.0652,0.1082
+LinearRegression,1.2623,1.0664,0.1054
+Lasso,1.3349,1.0819,-0.0004
+DecisionTreeRegressor,1.5543,1.1866,-0.3562
