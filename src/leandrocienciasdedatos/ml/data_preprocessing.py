@@ -51,19 +51,24 @@ def optimizar_tipos(df: pd.DataFrame) -> pd.DataFrame:
 
 def preparar_dataset(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Limpia el dataset integrado y crea los targets para ML.
-    - Crea target de clasificación: alto_desempeno (score_global > mediana)
-    - Elimina filas con nulos en columnas clave
-    - Optimiza tipos de datos
+    Prepara el dataset_final_integrado para Machine Learning.
+    Usa KNNImputer para preservar todas las filas sin perder información.
+    Crea el target de clasificación y optimiza tipos de datos.
     """
+    from sklearn.impute import KNNImputer
+
     df = df.copy()
 
-    # Eliminar filas con nulos en columnas clave
-    cols_clave = FEATURES_CLASIFICACION + FEATURES_REGRESION + [
+    # Seleccionar columnas numéricas para imputar
+    cols_numericas = FEATURES_CLASIFICACION + FEATURES_REGRESION + [
         "score_global", "avg_desempeno"
     ]
-    cols_clave = list(set(cols_clave))
-    df = df.dropna(subset=cols_clave)
+    cols_numericas = list(set(cols_numericas))
+    cols_existentes = [c for c in cols_numericas if c in df.columns]
+
+    # Aplicar KNNImputer (k=5 vecinos más cercanos)
+    imputer = KNNImputer(n_neighbors=5)
+    df[cols_existentes] = imputer.fit_transform(df[cols_existentes])
 
     # Crear target de clasificación binario
     mediana = df["score_global"].median()
@@ -73,7 +78,7 @@ def preparar_dataset(df: pd.DataFrame) -> pd.DataFrame:
     df = optimizar_tipos(df)
 
     logger.info(
-        f"Dataset preparado: {df.shape[0]} filas | "
+        f"Dataset preparado con KNNImputer: {df.shape[0]} filas | "
         f"Clase 1 (alto desempeño): {df[TARGET_CLASIFICACION].sum()} | "
         f"Clase 0: {(df[TARGET_CLASIFICACION] == 0).sum()}"
     )

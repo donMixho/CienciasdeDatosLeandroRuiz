@@ -1,7 +1,7 @@
 modelo,metodo,mejor_score,mejores_params
-Ridge,GridSearchCV,-0.2564,{'model__alpha': 100.0}
-Ridge,RandomizedSearchCV,-0.2564,{'model__alpha': 100.0}
-Lasso,GridSearchCV,-0.3212,{'model__alpha': 1.0}
-Lasso,RandomizedSearchCV,-0.3212,{'model__alpha': 1.0}
-RandomForestRegressor,GridSearchCV,-0.4015,"{'model__max_depth': None, 'model__n_estimators': 50}"
-RandomForestRegressor,RandomizedSearchCV,-0.4015,"{'model__n_estimators': 50, 'model__max_depth': None}"
+Ridge,GridSearchCV,-0.0298,{'model__alpha': 100.0}
+Ridge,RandomizedSearchCV,-0.0298,{'model__alpha': 100.0}
+Lasso,GridSearchCV,-0.0406,{'model__alpha': 1.0}
+Lasso,RandomizedSearchCV,-0.0406,{'model__alpha': 1.0}
+RandomForestRegressor,GridSearchCV,-0.0706,"{'model__max_depth': 5, 'model__n_estimators': 100}"
+RandomForestRegressor,RandomizedSearchCV,-0.0706,"{'model__n_estimators': 100, 'model__max_depth': 5}"

@@ -1,6 +1,6 @@
 modelo,accuracy,precision,recall,f1_score
-RandomForest,0.5556,0.5455,0.6667,0.6
-SVM,0.5556,0.5556,0.5556,0.5556
-GradientBoosting,0.4444,0.4545,0.5556,0.5
-LogisticRegression,0.5,0.5,0.4444,0.4706
-DecisionTree,0.3889,0.4,0.4444,0.4211
+GradientBoosting,0.549,0.5333,0.64,0.5818
+RandomForest,0.4706,0.4643,0.52,0.4906
+LogisticRegression,0.3922,0.4062,0.52,0.4561
+DecisionTree,0.4314,0.4286,0.48,0.4528
+SVM,0.4118,0.4,0.4,0.4
