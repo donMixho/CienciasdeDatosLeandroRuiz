@@ -1,0 +1,3 @@
+Modelo,R2_Baseline,R2_Optimizado,Mejora
+Ridge,-0.1548,-0.0934,0.0614
+RandomForest,-0.147,-0.081,0.066

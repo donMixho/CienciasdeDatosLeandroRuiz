@@ -1,0 +1,4 @@
+Modelo,F1_Baseline,F1_Optimizado,Mejora
+LogisticRegression,0.7547,0.7059,-0.0488
+RandomForest,0.7925,0.7925,0.0
+GradientBoosting,0.7719,0.8077,0.0358
