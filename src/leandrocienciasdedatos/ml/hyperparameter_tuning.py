@@ -12,18 +12,28 @@ def get_param_grid_clasificacion() -> dict:
     """Grillas de hiperparámetros para modelos de clasificación."""
     return {
         "RandomForest": {
-            "model__n_estimators": [50, 100, 200],
-            "model__max_depth": [None, 5, 10],
-            "model__min_samples_split": [2, 5],
+            "model__n_estimators": [100, 200, 300],
+            "model__max_depth": [None, 3, 5, 7],
+            "model__min_samples_split": [2, 5, 10],
+            "model__max_features": ["sqrt", "log2"],
         },
         "GradientBoosting": {
-            "model__n_estimators": [50, 100],
-            "model__learning_rate": [0.05, 0.1, 0.2],
-            "model__max_depth": [3, 5],
+            "model__n_estimators": [100, 200, 300],
+            "model__learning_rate": [0.01, 0.05, 0.1, 0.2],
+            "model__max_depth": [3, 4, 5],
+            "model__subsample": [0.8, 1.0],
         },
         "LogisticRegression": {
-            "model__C": [0.1, 1.0, 10.0],
-            "model__solver": ["lbfgs", "liblinear"],
+            "model__C": [0.01, 0.1, 0.5, 1.0, 5.0, 10.0, 50.0],
+            "model__solver": ["lbfgs", "liblinear", "saga"],
+        },
+
+        "XGBoost": {
+            "model__n_estimators": [100, 200, 300],
+            "model__max_depth": [3, 4, 5, 6],
+            "model__learning_rate": [0.01, 0.05, 0.1, 0.2],
+            "model__subsample": [0.8, 1.0],
+            "model__colsample_bytree": [0.8, 1.0],
         },
     }
 

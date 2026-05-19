@@ -11,8 +11,10 @@ from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor, GradientBoostingClassifier, GradientBoostingRegressor
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
+from xgboost import XGBClassifier
 
 logger = logging.getLogger(__name__)
+
 
 
 def get_modelos_clasificacion() -> dict:
@@ -20,31 +22,37 @@ def get_modelos_clasificacion() -> dict:
     Retorna diccionario con 5 pipelines de clasificación.
     Cada pipeline incluye StandardScaler + modelo.
     random_state=42 en todos los modelos que lo soporten.
+    class_weight='balanced' para compensar desbalance de clases.
     """
     modelos = {
         "LogisticRegression": Pipeline([
             ("scaler", StandardScaler()),
-            ("model", LogisticRegression(random_state=42, max_iter=1000))
+            ("model", LogisticRegression(random_state=42, max_iter=1000, class_weight="balanced"))
         ]),
         "DecisionTree": Pipeline([
             ("scaler", StandardScaler()),
-            ("model", DecisionTreeClassifier(random_state=42))
+            ("model", DecisionTreeClassifier(random_state=42, class_weight="balanced"))
         ]),
         "RandomForest": Pipeline([
             ("scaler", StandardScaler()),
-            ("model", RandomForestClassifier(random_state=42, n_estimators=100))
+            ("model", RandomForestClassifier(random_state=42, n_estimators=100, class_weight="balanced"))
         ]),
         "GradientBoosting": Pipeline([
             ("scaler", StandardScaler()),
-            ("model", GradientBoostingClassifier(random_state=42))
+            ("model", GradientBoostingClassifier(random_state=42, n_estimators=100, learning_rate=0.1))
         ]),
         "SVM": Pipeline([
             ("scaler", StandardScaler()),
-            ("model", SVC(random_state=42, probability=True))
+            ("model", SVC(random_state=42, probability=True, class_weight="balanced"))
+        ]),
+        "XGBoost": Pipeline([
+            ("scaler", StandardScaler()),
+            ("model", XGBClassifier(random_state=42, n_estimators=100, eval_metric="logloss", verbosity=0))
         ]),
     }
     logger.info(f"Modelos de clasificación definidos: {list(modelos.keys())}")
     return modelos
+
 
 
 def get_modelos_regresion() -> dict:

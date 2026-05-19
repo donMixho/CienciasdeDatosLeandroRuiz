@@ -11,13 +11,20 @@ logger = logging.getLogger(__name__)
 
 # ── Columnas definidas ────────────────────────────────────────────────────────
 FEATURES_CLASIFICACION = [
+    "avg_tecnicas",
+    "avg_blandas",
     "total_dias_ausencia",
     "total_horas_capacitacion",
     "antiguedad_anos",
+    "total_dias_ausencia_norm",
+    "total_horas_capacitacion_norm",
+    "antiguedad_anos_norm",
     "departamento_encoded",
     "cargo_encoded",
     "tipo_contrato_encoded",
     "jornada_encoded",
+    "ratio_cap_antiguedad",
+    "tasa_ausencia",
 ]
 
 FEATURES_REGRESION = [
@@ -26,10 +33,15 @@ FEATURES_REGRESION = [
     "total_dias_ausencia",
     "total_horas_capacitacion",
     "antiguedad_anos",
+    "total_dias_ausencia_norm",
+    "total_horas_capacitacion_norm",
+    "antiguedad_anos_norm",
     "departamento_encoded",
     "cargo_encoded",
     "tipo_contrato_encoded",
     "jornada_encoded",
+    "ratio_cap_antiguedad",
+    "tasa_ausencia",
 ]
 
 TARGET_CLASIFICACION = "alto_desempeno"
@@ -49,11 +61,13 @@ def optimizar_tipos(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+
 def preparar_dataset(df: pd.DataFrame) -> pd.DataFrame:
     """
     Prepara el dataset_final_integrado para Machine Learning.
     - Rellena con 0 ausencias y capacitaciones faltantes (lógica de negocio)
     - Usa KNNImputer para métricas de desempeño
+    - Crea features engineered: ratio_cap_antiguedad, tasa_ausencia
     - Crea el target de clasificación
     """
     from sklearn.impute import KNNImputer
@@ -97,7 +111,16 @@ def preparar_dataset(df: pd.DataFrame) -> pd.DataFrame:
         df["score_global"] > mediana
     ).astype(int)
 
-    # Paso 4: Optimizar memoria
+    # Paso 4: Feature engineering — variables informativas adicionales
+    df["ratio_cap_antiguedad"] = (
+        df["total_horas_capacitacion"] / (df["antiguedad_anos"] + 1)
+    ).round(3)
+    df["tasa_ausencia"] = (
+        df["total_dias_ausencia"] / (df["antiguedad_anos"] + 1)
+    ).round(3)
+    logger.info("Features engineered: ratio_cap_antiguedad, tasa_ausencia")
+
+    # Paso 5: Optimizar memoria
     df = optimizar_tipos(df)
 
     logger.info(

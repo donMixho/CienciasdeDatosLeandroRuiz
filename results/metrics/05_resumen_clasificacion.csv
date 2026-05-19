@@ -1,0 +1,7 @@
+Modelo,CV_F1,Test_F1,Test_Acc,Test_Prec,Test_Recall
+RandomForest,0.7099,0.8077,0.8039,0.7778,0.84
+SVM,0.7208,0.7692,0.7647,0.7407,0.8
+LogisticRegression,0.7638,0.7547,0.7451,0.7143,0.8
+GradientBoosting,0.6865,0.7241,0.6863,0.6364,0.84
+DecisionTree,0.7244,0.6923,0.6863,0.6667,0.72
+KNN,0.6719,0.6667,0.6471,0.6207,0.72
