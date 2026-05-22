@@ -1,9 +1,11 @@
-# LeandroCienciasDeDatos — EV2
+# 🧠 LeandroCienciasDeDatos — EV2
 
 [![Powered by Kedro](https://img.shields.io/badge/powered_by-kedro-ffc900?logo=kedro)](https://kedro.org)
 [![Python](https://img.shields.io/badge/python-3.10+-blue)](https://www.python.org/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange)](https://scikit-learn.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-best_model-green)](https://xgboost.readthedocs.io/)
 
-## Descripción
+## 📋 Descripción
 
 Este es mi proyecto de **Machine Learning aplicado a datos de Recursos Humanos**, desarrollado para la asignatura **SCY1101 - Programación para la Ciencia de Datos** (EV2). Es la continuación de la EV1, donde ya habíamos limpiado y transformado los datos. En esta etapa, el foco está en entrenar modelos de aprendizaje supervisado y no supervisado, optimizar hiperparámetros y analizar los resultados, todo orquestado con **Kedro**.
 
@@ -16,19 +18,19 @@ Los datos vienen de una empresa ficticia y están divididos en 4 archivos:
 
 ---
 
-## Qué busca aprender el modelo
+## 🎯 Qué busca aprender el modelo
 
 La idea principal del proyecto es ver si es posible predecir el desempeño de un empleado a partir de sus características. Para eso planteamos dos problemas distintos:
 
-### Clasificación — ¿Este empleado tendrá alto desempeño?
+### 🔵 Clasificación — ¿Este empleado tendrá alto desempeño?
 
 Acá el modelo intenta aprender a distinguir entre empleados de **alto desempeño** (`alto_desempeno = 1`) y los que no (`= 0`), mirando variables como cuántas horas de capacitación tiene, cuántos días faltó, su antigüedad, el departamento donde trabaja y cómo le fue en evaluaciones anteriores.
 
 La idea es que si el modelo aprende bien ese patrón, en la práctica podría ayudar a tomar decisiones sobre a quién retener, promover o apoyar con más formación.
 
-> El target lo construimos comparando el `score_global` de cada empleado contra la mediana del grupo. Si está por encima, es alto desempeño.
+> 💡 El target lo construimos comparando el `score_global` de cada empleado contra la mediana del grupo. Si está por encima, es alto desempeño.
 
-### Regresión — ¿Cuánto va a rendir este empleado?
+### 🟠 Regresión — ¿Cuánto va a rendir este empleado?
 
 En vez de solo decir "alto o bajo", acá intentamos predecir directamente el número: el `avg_desempeno` (el promedio de sus evaluaciones de desempeño).
 
@@ -36,18 +38,18 @@ Es un problema más difícil porque tiene que estimar un valor continuo, pero ta
 
 ---
 
-## Contexto y limitaciones del dataset
+## ⚠️ Contexto y limitaciones del dataset
 
 Uno de los desafíos más grandes de este proyecto fue que el dataset es bastante pequeño. Con pocos registros, los modelos tienen menos ejemplos para aprender y es más fácil que se sobreajusten o que simplemente no logren capturar los patrones. Eso explica por qué el R² de regresión quedó en 0.2795, que no es el mejor resultado, pero es lo que el dataset nos permite con las herramientas que aplicamos.
 
-### Cómo cuidamos los datos para no perder registros
+### 🛡️ Cómo cuidamos los datos para no perder registros
 
 Como teníamos pocos datos, no podíamos darnos el lujo de eliminar filas con valores faltantes. En cambio, usamos estas estrategias:
 
 - **KNNImputer (k=5)**: para rellenar los valores faltantes en métricas de desempeño (`avg_desempeno`, `avg_tecnicas`, `avg_blandas`, `score_global`). Lo que hace es buscar los 5 empleados más parecidos y usar sus valores para estimar el que falta. Así conservamos cada registro en lugar de tirarlo a la basura.
 - **Imputación con cero por lógica de negocio**: para ausencias y horas de capacitación, si no había registro simplemente pusimos 0. Tiene sentido porque si no hay registro, probablemente es que el empleado no faltó ni tomó cursos.
 
-### Qué hicimos para que los modelos aprendieran mejor
+### 🚀 Qué hicimos para que los modelos aprendieran mejor
 
 - **`class_weight='balanced'`**: cuando las clases están desbalanceadas (hay muchos más empleados de un tipo que del otro), el modelo tiende a ignorar la clase minoritaria. Con esto lo forzamos a prestarle atención a las dos.
 - **Modelos de ensemble** (RandomForest, GradientBoosting, XGBoost, StackingEnsemble): en vez de apostar todo a un solo modelo, estos combinan muchos modelos más simples. Con pocos datos funcionan mucho mejor porque reducen el sobreajuste.
@@ -58,17 +60,58 @@ Como teníamos pocos datos, no podíamos darnos el lujo de eliminar filas con va
 
 ---
 
-## Resultados principales
+## 🏆 Resultados principales
 
 | Tarea | Mejor modelo | Métrica |
 |---|---|---|
-| Clasificación (alto desempeño) | XGBoost | F1 = 0.8148 |
-| Regresión (puntaje de desempeño) | XGBoostRegressor | R² = 0.2795 |
-| Clustering | K-Means (k=3) | PCA 2 componentes |
+| 🔵 Clasificación (alto desempeño) | XGBoost | F1 = **0.8148** |
+| 🟠 Regresión (puntaje de desempeño) | XGBoostRegressor | R² = **0.2795** |
+| 🟣 Clustering | K-Means (k=3) | PCA 2 componentes |
 
 ---
 
-## Estructura del Proyecto
+## 📂 Dónde se guardan los datos en cada etapa
+
+Kedro organiza los datos en capas según en qué parte del proceso están. Acá está el recorrido completo de los datos, desde los CSVs originales hasta los resultados finales:
+
+```
+data/01_raw/               ← Acá van los 4 CSVs originales (no se tocan)
+    empleados.csv
+    evaluaciones.csv
+    capacitaciones.csv
+    ausencias.csv
+
+data/02_intermediate/      ← Los mismos 4 archivos pero ya limpios
+    empleados_clean.csv
+    evaluaciones_clean.csv
+    capacitaciones_clean.csv
+    ausencias_clean.csv
+
+data/03_primary/           ← Un solo dataset unificado con todos los datos
+    dataset_final_integrado.csv
+
+data/04_feature/           ← El dataset listo para entrenar modelos (con imputación y feature engineering)
+    dataset_ml_preparado.csv
+
+data/07_model_output/      ← Todos los resultados de los modelos
+    metricas_clasificacion.csv   → Accuracy, F1, ROC-AUC de cada modelo
+    metricas_regresion.csv       → R², MAE, MSE, RMSE de cada modelo
+    cv_clasificacion.csv         → Resultados de validación cruzada (clasificación)
+    cv_regresion.csv             → Resultados de validación cruzada (regresión)
+    tuning_clasificacion.csv     → Mejores hiperparámetros encontrados (clasificación)
+    tuning_regresion.csv         → Mejores hiperparámetros encontrados (regresión)
+    pca_resultado.csv            → Coordenadas PCA de cada empleado
+    kmeans_resultado.csv         → Cluster asignado a cada empleado
+
+data/08_reporting/         ← Reportes de calidad del proceso de limpieza
+    reporte_diagnostico.csv
+    reporte_comparacion.csv
+    reporte_validacion_final.csv
+```
+
+---
+
+## 🏗️ Estructura del Proyecto
 
 ```
 CienciasdeDatosLeandroRuiz/
@@ -76,13 +119,7 @@ CienciasdeDatosLeandroRuiz/
 │   └── base/
 │       ├── catalog.yml          → Definición de todos los datasets
 │       └── parameters.yml       → Parámetros configurables
-├── data/
-│   ├── 01_raw/                  → CSVs originales (no modificar)
-│   ├── 02_intermediate/         → Datos limpios por tabla
-│   ├── 03_primary/              → Dataset integrado
-│   ├── 04_feature/              → Dataset preparado para ML
-│   ├── 07_model_output/         → Métricas, resultados CV y tuning
-│   └── 08_reporting/            → Reportes de diagnóstico y validación
+├── data/                        → (ver sección anterior)
 ├── notebooks/
 │   ├── 01_exploratory_analysis.ipynb        → EDA inicial
 │   ├── 02_supervised_modeling.ipynb         → Entrenamiento de modelos
@@ -111,7 +148,7 @@ CienciasdeDatosLeandroRuiz/
 
 ---
 
-## Instalación
+## ⚙️ Instalación
 
 ### 1. Clonar el repositorio
 
@@ -155,7 +192,7 @@ Poner los 4 archivos en `data/01_raw/`:
 
 ---
 
-## Ejecución
+## 🚀 Ejecución
 
 ### Correr todos los pipelines en orden
 
@@ -187,7 +224,7 @@ kedro jupyter notebook
 
 ---
 
-## Pipelines
+## 🔄 Pipelines
 
 ### Pipeline 1 — Data Ingestion
 
@@ -271,7 +308,7 @@ Buscamos los mejores hiperparámetros para los modelos más prometedores usando 
 
 ---
 
-## Dependencias principales
+## 📦 Dependencias principales
 
 | Librería | Versión | Uso |
 |---|---|---|
@@ -284,7 +321,7 @@ Buscamos los mejores hiperparámetros para los modelos más prometedores usando 
 
 ---
 
-## Autor
+## 👤 Autor
 
 **Leandro Ruiz**  
 Ingeniería Informática — Ciencia de Datos  
