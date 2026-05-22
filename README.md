@@ -119,6 +119,60 @@ En este caso XGBoost el cual como se puede ver en la tabla tiene el F1 más alto
 
 Como se ve en la tabla el R² es bajo ya que se trabajo con un dataset que tiene pocos registros, lo que limita la capacidad predictiva de cualquier modelo. Un R²=0.27 significa que el modelo explica el 27% de la variabilidad del desempeño, resultado esperable con datos escasos. Los modelos con R² negativo (Lasso, DecisionTree) rindieron peor que simplemente predecir la media, lo que confirma que la regularización agresiva no ayuda en este caso.
 
+---
+---
+
+## 🔧 Optimización de Hiperparámetros
+
+Usamos dos estrategias de búsqueda para encontrar la mejor configuración 
+de cada modelo:
+
+- **GridSearchCV**: prueba todas las combinaciones posibles de una grilla 
+  definida. Más exhaustivo pero más lento.
+- **RandomizedSearchCV**: prueba combinaciones al azar. Más rápido cuando 
+  el espacio de búsqueda es grande.
+
+Ambos métodos usan validación cruzada de 5 folds internamente, por lo que 
+los scores aquí son más conservadores que los del test set — pero también 
+más confiables.
+
+### 🔵 Clasificación
+
+| Modelo | Método | Score CV | Mejores parámetros |
+|--------|--------|----------|--------------------|
+| LogisticRegression | GridSearchCV | 0.7772 | C=0.5, solver=lbfgs |
+| LogisticRegression | RandomizedSearchCV | 0.7772 | C=0.5, solver=saga |
+| GradientBoosting | GridSearchCV | 0.7708 | n_estimators=200, max_depth=4, lr=0.1 |
+| GradientBoosting | RandomizedSearchCV | 0.7708 | n_estimators=200, max_depth=4, lr=0.1 |
+| XGBoost | GridSearchCV | 0.7655 | n_estimators=100, max_depth=3, lr=0.01 |
+| XGBoost | RandomizedSearchCV | 0.7533 | n_estimators=300, max_depth=5, lr=0.01 |
+| RandomForest | GridSearchCV | 0.7470 | n_estimators=200, max_depth=7 |
+| RandomForest | RandomizedSearchCV | 0.7369 | n_estimators=300, max_depth=7 |
+
+### 🟠 Regresión
+
+| Modelo | Método | Score CV (R²) | Mejores parámetros |
+|--------|--------|---------------|--------------------|
+| Lasso | GridSearchCV | 0.0660 | alpha=0.1 |
+| Lasso | RandomizedSearchCV | 0.0660 | alpha=0.1 |
+| RandomForestRegressor | GridSearchCV | 0.1100 | n_estimators=200, max_depth=5 |
+| RandomForestRegressor | RandomizedSearchCV | 0.1100 | n_estimators=200, max_depth=5 |
+| Ridge | GridSearchCV | 0.0493 | alpha=100.0 |
+| Ridge | RandomizedSearchCV | 0.0493 | alpha=100.0 |
+
+### 📌 ¿Qué nos dice el tuning?
+
+Dos observaciones importantes:
+
+1. **GridSearch y RandomizedSearch encontraron los mismos parámetros** en 
+   la mayoría de los modelos. Eso confirma que la búsqueda fue robusta y 
+   que los parámetros óptimos están bien identificados.
+
+2. **Los scores de CV son más bajos que los del test set** (por ejemplo 
+   XGBoost CV=0.77 vs F1=0.82 en test). Esto es esperado: la validación 
+   cruzada es más conservadora porque evalúa el modelo en múltiples 
+   particiones del dataset, dando una estimación más realista del 
+   rendimiento en datos nuevos.
 ## 📂 Dónde se guardan los datos en cada etapa
 
 Kedro organiza los datos en capas según en qué parte del proceso están. Acá está el recorrido completo de los datos, desde los CSVs originales hasta los resultados finales:
