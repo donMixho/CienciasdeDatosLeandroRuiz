@@ -46,9 +46,10 @@ def evaluar_regresion(modelos: dict, X_test: pd.DataFrame,
         y_pred = modelo.predict(X_test)
         resultados.append({
             "modelo": nombre,
+            "mse":  round(mean_squared_error(y_test, y_pred), 4),
             "rmse": round(np.sqrt(mean_squared_error(y_test, y_pred)), 4),
-            "mae": round(mean_absolute_error(y_test, y_pred), 4),
-            "r2": round(r2_score(y_test, y_pred), 4),
+            "mae":  round(mean_absolute_error(y_test, y_pred), 4),
+            "r2":   round(r2_score(y_test, y_pred), 4),
         })
     df_resultados = pd.DataFrame(resultados).sort_values("r2", ascending=False)
     logger.info("Evaluación de regresión completada.")

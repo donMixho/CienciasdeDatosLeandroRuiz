@@ -8,7 +8,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression, LinearRegression, Ridge, Lasso
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor, GradientBoostingClassifier, GradientBoostingRegressor
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor, GradientBoostingClassifier, GradientBoostingRegressor, VotingClassifier, StackingClassifier
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from xgboost import XGBClassifier
@@ -49,6 +49,29 @@ def get_modelos_clasificacion() -> dict:
             ("scaler", StandardScaler()),
             ("model", XGBClassifier(random_state=42, n_estimators=100, eval_metric="logloss", verbosity=0))
         ]),
+
+        "StackingEnsemble": Pipeline([
+            ("scaler", StandardScaler()),
+            ("model", StackingClassifier(
+                estimators=[
+                    ("xgb", XGBClassifier(
+                        random_state=42, n_estimators=100,
+                        eval_metric="logloss", verbosity=0
+                    )),
+                    ("gb", GradientBoostingClassifier(
+                        random_state=42, n_estimators=200,
+                        learning_rate=0.1, max_depth=4
+                    )),
+                    ("svm", SVC(
+                        random_state=42, probability=True,
+                        class_weight="balanced"
+                    )),
+                ],
+                final_estimator=LogisticRegression(random_state=42),
+                cv=5
+            ))
+        ]),
+
     }
     logger.info(f"Modelos de clasificación definidos: {list(modelos.keys())}")
     return modelos
