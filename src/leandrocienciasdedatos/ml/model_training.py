@@ -12,6 +12,7 @@ from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor, Grad
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from xgboost import XGBClassifier
+from xgboost import XGBClassifier, XGBRegressor
 
 logger = logging.getLogger(__name__)
 
@@ -104,6 +105,18 @@ def get_modelos_regresion() -> dict:
             ("scaler", StandardScaler()),
             ("model", RandomForestRegressor(random_state=42, n_estimators=100))
         ]),
+
+        "XGBoostRegressor": Pipeline([
+            ("scaler", StandardScaler()),
+            ("model", XGBRegressor(
+                random_state=42,
+                n_estimators=100,
+                eval_metric="rmse",
+                verbosity=0
+            ))
+        ]),
+
+
     }
     logger.info(f"Modelos de regresión definidos: {list(modelos.keys())}")
     return modelos
