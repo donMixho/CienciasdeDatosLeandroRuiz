@@ -372,4 +372,4 @@ Buscamos los mejores hiperparámetros para los modelos más prometedores usando 
 
 **Leandro Ruiz**  
 Ingeniería Informática — Ciencia de Datos  
-SCY1101 — 2025
+SCY1101 — 2026
