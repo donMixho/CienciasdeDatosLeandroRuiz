@@ -42,12 +42,26 @@ Es un problema más difícil porque tiene que estimar un valor continuo, pero ta
 
 Uno de los desafíos más grandes de este proyecto fue que el dataset es bastante pequeño. Con pocos registros, los modelos tienen menos ejemplos para aprender y es más fácil que se sobreajusten o que simplemente no logren capturar los patrones. Eso explica por qué el R² de regresión quedó en 0.2795, que no es el mejor resultado, pero es lo que el dataset nos permite con las herramientas que aplicamos.
 
+### ⚠️ Nota sobre imputación y data leakage
+El `KNNImputer` se aplica sobre el dataset completo **antes** del 
+`train_test_split`, lo que técnicamente constituye un data leakage leve: 
+el imputer utiliza información de los datos de test al ajustarse.
+
+La decisión fue intencional dado el tamaño del dataset (~255 registros). 
+Hacer el split primero reduciría los datos disponibles para el algoritmo 
+KNN, produciendo imputaciones de menor calidad y perdiendo registros 
+valiosos. Es un compromiso aceptado conscientemente: priorizamos la 
+calidad de la imputación por sobre la pureza metodológica estricta, 
+estrategia razonable cuando los datos son escasos.
+
+
 ### 🛡️ Cómo cuidamos los datos para no perder registros
 
 Como teníamos pocos datos, no podíamos darnos el lujo de eliminar filas con valores faltantes. En cambio, usamos estas estrategias:
 
 - **KNNImputer (k=5)**: para rellenar los valores faltantes en métricas de desempeño (`avg_desempeno`, `avg_tecnicas`, `avg_blandas`, `score_global`). Lo que hace es buscar los 5 empleados más parecidos y usar sus valores para estimar el que falta. Así conservamos cada registro en lugar de tirarlo a la basura.
 - **Imputación con cero por lógica de negocio**: para ausencias y horas de capacitación, si no había registro simplemente pusimos 0. Tiene sentido porque si no hay registro, probablemente es que el empleado no faltó ni tomó cursos.
+
 
 ### 🚀 Qué hicimos para que los modelos aprendieran mejor
 
@@ -86,7 +100,7 @@ Como teníamos pocos datos, no podíamos darnos el lujo de eliminar filas con va
 | 6 | LogisticRegression | 74.5% | 71.4% | 80.0% | 75.5% |
 | 7 | DecisionTree | 66.7% | 65.4% | 68.0% | 66.7% |
 
-**¿Por qué ganó XGBoost?** Tiene el F1 más alto (82.1%) y el recall más alto (92%), lo que significa que detecta correctamente al 92% de los empleados de alto desempeño. En un contexto de RRHH, perder a un empleado valioso es más costoso que un falso positivo, por eso priorizamos el recall alto.
+En este caso XGBoost el cual como se puede ver en la tabla tiene el F1 más alto (82.1%) y el recall más alto (92%), lo que significa que detecta correctamente al 92% de los empleados de alto desempeño. En un contexto de RRHH, perder a un empleado valioso es más costoso que un falso positivo, por eso priorizamos el recall alto.
 
 ---
 
@@ -103,7 +117,7 @@ Como teníamos pocos datos, no podíamos darnos el lujo de eliminar filas con va
 | 5 | Lasso | -0.0075 | 1.19 | 1.59 |
 | 6 | DecisionTreeRegressor | -0.6841 | 1.63 | 2.05 |
 
-**¿Por qué el R² es bajo?** El dataset tiene pocos registros, lo que limita la capacidad predictiva de cualquier modelo. Un R²=0.27 significa que el modelo explica el 27% de la variabilidad del desempeño, resultado esperable con datos escasos. Los modelos con R² negativo (Lasso, DecisionTree) rindieron peor que simplemente predecir la media, lo que confirma que la regularización agresiva no ayuda en este caso.
+Como se ve en la tabla el R² es bajo ya que se trabajo con un dataset que tiene pocos registros, lo que limita la capacidad predictiva de cualquier modelo. Un R²=0.27 significa que el modelo explica el 27% de la variabilidad del desempeño, resultado esperable con datos escasos. Los modelos con R² negativo (Lasso, DecisionTree) rindieron peor que simplemente predecir la media, lo que confirma que la regularización agresiva no ayuda en este caso.
 
 ## 📂 Dónde se guardan los datos en cada etapa
 
@@ -198,7 +212,7 @@ cd CienciasdeDatosLeandroRuiz
 python -m venv .venv
 
 # Windows
-.venv\Scripts\activate
+source .venv/Scripts/activate
 
 # Mac/Linux
 source .venv/bin/activate
@@ -238,13 +252,11 @@ kedro run
 ### Correr un pipeline específico
 
 ```bash
-# Preprocesamiento (EV1)
 kedro run --pipeline data_ingestion
 kedro run --pipeline data_cleaning
 kedro run --pipeline data_transformation
 kedro run --pipeline data_validation
-
-# Machine Learning (EV2)
+---
 kedro run --pipeline supervised_modeling
 kedro run --pipeline unsupervised_modeling
 kedro run --pipeline model_evaluation
