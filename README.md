@@ -70,6 +70,41 @@ Como teníamos pocos datos, no podíamos darnos el lujo de eliminar filas con va
 
 ---
 
+## 📊 Comparación completa de modelos
+
+### 🔵 Clasificación — ¿Este empleado tendrá alto desempeño?
+
+> Métrica principal: **F1-Score** (equilibrio entre precisión y recall).
+
+| # | Modelo | Accuracy | Precision | Recall | F1-Score |
+|---|--------|----------|-----------|--------|----------|
+| 🥇 | XGBoost | 80.4% | 74.2% | **92.0%** | **82.1%** |
+| 🥈 | RandomForest | 80.4% | 75.9% | 88.0% | 81.5% |
+| 🥉 | SVM | 76.5% | 74.1% | 80.0% | 76.9% |
+| 4 | GradientBoosting | 74.5% | 70.0% | 84.0% | 76.4% |
+| 5 | StackingEnsemble | 72.5% | 66.7% | 88.0% | 75.9% |
+| 6 | LogisticRegression | 74.5% | 71.4% | 80.0% | 75.5% |
+| 7 | DecisionTree | 66.7% | 65.4% | 68.0% | 66.7% |
+
+**¿Por qué ganó XGBoost?** Tiene el F1 más alto (82.1%) y el recall más alto (92%), lo que significa que detecta correctamente al 92% de los empleados de alto desempeño. En un contexto de RRHH, perder a un empleado valioso es más costoso que un falso positivo, por eso priorizamos el recall alto.
+
+---
+
+### 🟠 Regresión — ¿Cuánto va a rendir este empleado?
+
+> Métrica principal: **R²** (qué tan bien explica la variabilidad del target). Menor RMSE = mejor.
+
+| # | Modelo | R² | MAE | RMSE |
+|---|--------|----|-----|------|
+| 🥇 | RandomForestRegressor | **0.2721** | 1.00 | 1.35 |
+| 🥈 | XGBoostRegressor | 0.2157 | 1.13 | 1.40 |
+| 🥉 | Ridge | 0.1967 | 1.03 | 1.42 |
+| 4 | LinearRegression | 0.1934 | 1.03 | 1.42 |
+| 5 | Lasso | -0.0075 | 1.19 | 1.59 |
+| 6 | DecisionTreeRegressor | -0.6841 | 1.63 | 2.05 |
+
+**¿Por qué el R² es bajo?** El dataset tiene pocos registros, lo que limita la capacidad predictiva de cualquier modelo. Un R²=0.27 significa que el modelo explica el 27% de la variabilidad del desempeño, resultado esperable con datos escasos. Los modelos con R² negativo (Lasso, DecisionTree) rindieron peor que simplemente predecir la media, lo que confirma que la regularización agresiva no ayuda en este caso.
+
 ## 📂 Dónde se guardan los datos en cada etapa
 
 Kedro organiza los datos en capas según en qué parte del proceso están. Acá está el recorrido completo de los datos, desde los CSVs originales hasta los resultados finales:
